@@ -23,6 +23,7 @@ struct UserView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .clipShape(Circle())
+                                
                         } placeholder: {
                             Circle()
                                 .foregroundColor(.teal)
@@ -32,8 +33,10 @@ struct UserView: View {
                         VStack(alignment: .leading) {
                             Text(user.login?.capitalized ?? "")
                                 .font(.headline)
+                                .fontWeight(.heavy)
                             Text(user.url ?? "")
                                 .font(.subheadline)
+                                .fontWeight(.light)
                         }
                     }
                 }
@@ -47,13 +50,10 @@ struct UserView: View {
                 }
             }
         }
-//        .onAppear() {
-//            Task(operation: {
-//                await viewModel.getUsers()
-//            })
-//        }
-        .task {
-            await viewModel.getUsers()
+        .onAppear() {
+            Task(operation: {
+                await viewModel.getUsers()
+            })
         }
         .alert(isPresented: $viewModel.shouldShowAlert) {
             return Alert(

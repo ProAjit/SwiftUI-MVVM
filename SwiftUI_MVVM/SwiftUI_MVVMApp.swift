@@ -12,6 +12,7 @@ struct SwiftUI_MVVMApp: App {
     var body: some Scene {
         WindowGroup {
             UserView()
+                .preferredColorScheme(.light)
         }
     }
 }
