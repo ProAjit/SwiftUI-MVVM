@@ -14,7 +14,6 @@ struct UserView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.white.ignoresSafeArea()
                 List(viewModel.users ?? [], id: \.id) { user in
                     HStack {
                         AsyncImage(url: URL(string: user.avatarURL ?? "")) { image in
@@ -40,6 +39,14 @@ struct UserView: View {
                     }
                 }
                 .listStyle(.plain)
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.teal)
+                        .controlSize(.large)
+                }
+                
             }
             .navigationTitle("Users List")
         }
@@ -52,6 +59,7 @@ struct UserView: View {
                 message: Text(viewModel.userError?.localizedDescription ?? "")
             )
         }
+        
     }
     
 }

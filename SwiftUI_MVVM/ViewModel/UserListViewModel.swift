@@ -10,13 +10,13 @@ import Foundation
 @MainActor
 final class UserListViewModel: ObservableObject {
     
-    @Published var users: [UserModel]?
-    @Published var userError: UserError?
+    @Published private(set) var users: [UserModel]?
+    @Published private(set) var userError: UserError?
     @Published var shouldShowAlert = false
-    @Published var isLoading = false
+    @Published var isLoading = true
     
     func getUsers() async {
-        isLoading = true
+        //sleep(UInt32(3.0))
         do {
             self.users = try await WebService.getUsersData()
             self.isLoading = false
