@@ -10,12 +10,11 @@ import SwiftUI
 struct UserView: View {
     
     @ObservedObject var viewModel = UserListViewModel()
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.white.ignoresSafeArea()
-                
                 List(viewModel.users ?? [], id: \.id) { user in
                     HStack {
                         AsyncImage(url: URL(string: user.avatarURL ?? "")) { image in
@@ -41,27 +40,20 @@ struct UserView: View {
                     }
                 }
                 .listStyle(.plain)
-                .listRowInsets(EdgeInsets())
-                .background(Color.white)
-                .navigationTitle("Users")
-                
-                if viewModel.isLoading {
-                    LoaderView()
-                }
             }
+            .navigationTitle("Users List")
         }
-        .onAppear() {
-            Task(operation: {
-                await viewModel.getUsers()
-            })
+        .task {
+            await viewModel.getUsers()
         }
         .alert(isPresented: $viewModel.shouldShowAlert) {
             return Alert(
                 title: Text("Error"),
-                message: Text(viewModel.userError?.errorDescription ?? "")
+                message: Text(viewModel.userError?.localizedDescription ?? "")
             )
         }
     }
+    
 }
 
 #Preview {

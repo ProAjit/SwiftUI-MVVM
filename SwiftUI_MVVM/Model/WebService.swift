@@ -7,18 +7,19 @@
 
 import Foundation
 
+struct APIEndpoints {
+    static let usersURLString = "https://api.github.com/users"
+}
+
 final class WebService {
     
     static func getUsersData() async throws -> [UserModel] {
-        let urlString = "https://api.github.com/users"
-        guard let url = URL(string: urlString) else {
+        guard let url = URL(string: APIEndpoints.usersURLString) else {
             throw UserError.invalidURL
         }
         
         let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse,
-                response.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw UserError.invalidResponse
         }
         
@@ -29,7 +30,9 @@ final class WebService {
             throw UserError.invalidData
         }
     }
+    
 }
+
 
 enum UserError: LocalizedError {
     case invalidURL
